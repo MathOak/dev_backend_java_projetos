@@ -37,5 +37,7 @@ public class Alunos extends BaseEntity {
 	}
 	public void setEscolaridade(String escolaridade) {
 		this.escolaridade = escolaridade;
-	}	
+	}
+
+	
 }

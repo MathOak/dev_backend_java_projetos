@@ -1,12 +1,10 @@
 package com.gestaoclasse.class_manager.Controllers;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gestaoclasse.class_manager.DTOs.AlunoRequestDTO;
-import com.gestaoclasse.class_manager.DTOs.AlunoResponseDTO;
-import com.gestaoclasse.class_manager.DTOs.AlunoResponsePostPutDTO;
-import com.gestaoclasse.class_manager.Entities.Alunos;
+import com.gestaoclasse.class_manager.DTOs.Cursos.CursosRequestDTO;
+import com.gestaoclasse.class_manager.DTOs.Cursos.CursosResponseDTO;
 import com.gestaoclasse.class_manager.Entities.Cursos;
-import com.gestaoclasse.class_manager.Services.AlunosService;
-import com.gestaoclasse.class_manager.Services.CursosService;
 import com.gestaoclasse.class_manager.Services.CursosService;
 
 import jakarta.validation.Valid;
@@ -36,21 +30,14 @@ public class CursosController {
 	private CursosService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Cursos>> listarTodos() {
-		ArrayList<Cursos> alunos =new ArrayList<>(service.getAllAlunos());
-		ArrayList<Cursos> newAlunosList = new ArrayList();
-		alunos.forEach(aluno->{
-			newAlunosList.add(aluno);
-		});
-	
-		return ResponseEntity.status(HttpStatus.OK).body(newAlunosList);
+	public ResponseEntity<List<CursosResponseDTO>> listarTodos() {
+		return service.getAll();
 	}
 	
 	@PostMapping
-	public ResponseEntity<Cursos> criarAluno(@Valid @RequestBody Cursos body) {
-		Cursos aluno = body;
-		Cursos newAluno = service.saveOne(aluno);
-		return ResponseEntity.status(HttpStatus.CREATED).body(newAluno);
+	public ResponseEntity<CursosResponseDTO> criarAluno(@Valid @RequestBody CursosRequestDTO body) {
+		Cursos object = CursosRequestDTO.toEntity(body);
+		return service.saveOne(object);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -59,8 +46,8 @@ public class CursosController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Cursos> atualizar(@PathVariable UUID id, @Valid @RequestBody Cursos body){
-		Cursos dados = body;
-		return service.updateProfessorById(id, dados);
+	public ResponseEntity<CursosResponseDTO> atualizar(@PathVariable UUID id, @Valid @RequestBody CursosRequestDTO body){
+		Cursos dados = CursosRequestDTO.toEntity(body);
+		return service.updateById(id, dados);
 	}
 }
