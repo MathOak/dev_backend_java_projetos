@@ -4,13 +4,14 @@ import java.time.LocalDate;
 
 import com.gestaoclasse.class_manager.Entities.Alunos;
 import com.gestaoclasse.class_manager.Interfaces.OnCreate;
+import com.gestaoclasse.class_manager.Interfaces.OnUpdate;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 
 public record AlunoRequestDTO(
-		@NotBlank(groups = {OnCreate.class}, message = "Nome é obrigatório")
+		@NotBlank(groups = {OnCreate.class, OnUpdate.class}, message = "Nome é obrigatório")
 		String nome,
 		
 		@NotNull(groups = {OnCreate.class}, message = "Data de nascimento é obrigatória")
